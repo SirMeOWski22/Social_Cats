@@ -1,4 +1,4 @@
-const { User, Thought } = require('../models');
+const { User } = require('../models');
 
 // Controller functions for user routes
 const userController = {
@@ -46,8 +46,11 @@ const userController = {
   // PUT to update a user by _id
   updateUser(req, res) {
     console.log('updateUser called with id:', req.params.id, 'body:', req.body);
-    User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
       .then((updatedUser) => {
+        if (!updatedUser) {
+          return res.status(404).json({ message: 'No user found with this id!' });
+        }
         console.log('User updated:', updatedUser);
         res.json(updatedUser);
       })
@@ -79,6 +82,9 @@ const userController = {
     );
     User.findById(req.params.userId)
       .then((user) => {
+        if (!user) {
+          return res.status(404).json({ message: 'No user found with this id!' });
+        }
         user.friends.push(req.params.friendId);
         return user.save();
       })
