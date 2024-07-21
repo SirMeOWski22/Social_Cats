@@ -8,10 +8,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use('/api', routes);
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/socialCatDB', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/socialNetworkDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false,
 });
 
 mongoose.connection.once('open', () => {
