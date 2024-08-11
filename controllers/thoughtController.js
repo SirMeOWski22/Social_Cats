@@ -1,4 +1,5 @@
 const { Thought, User } = require('../models');
+const { stringify } = require('flatted');
 
 // Controller functions for thought routes
 const thoughtController = {
@@ -70,7 +71,7 @@ const thoughtController = {
         res.json({ message: 'Reaction deleted successfully', updatedThought });
       })
       .catch((err) => {
-        console.error('Error while deleting reaction:', err.message);
+        console.error('Error while deleting reaction:', stringify(err));
         if (!res.headersSent) {
           res.status(500).json({ error: err.message });
         }
