@@ -54,18 +54,21 @@ const thoughtController = {
     Thought.findById(req.params.thoughtId)
       .then((thought) => {
         if (!thought) {
+          console.log('No thought found with this id:', req.params.thoughtId);
           return res.status(404).json({ message: 'No thought found with this id!' });
         }
         const reaction = thought.reactions.id(req.params.reactionId);
         if (!reaction) {
+          console.log('No reaction found with this id:', req.params.reactionId);
           return res.status(404).json({ message: 'No reaction found with this id!' });
         }
         reaction.remove();
         return thought.save();
       })
-      .then((updatedThought) =>
-        res.json({ message: 'Reaction deleted successfully', updatedThought })
-      )
+      .then((updatedThought) => {
+        console.log('Reaction deleted successfully');
+        res.json({ message: 'Reaction deleted successfully', updatedThought });
+      })
       .catch((err) => {
         console.error('Error while deleting reaction:', err.message);
         if (!res.headersSent) {
