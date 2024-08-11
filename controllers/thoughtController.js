@@ -67,13 +67,16 @@ const thoughtController = {
         return thought.save();
       })
       .then((updatedThought) => {
+        if (!updatedThought) {
+          return;
+        }
         console.log('Reaction deleted successfully');
         res.json({ message: 'Reaction deleted successfully', updatedThought });
       })
       .catch((err) => {
-        console.error('Error while deleting reaction:', stringify(err));
+        console.error('Error while deleting reaction:', err.message || err);
         if (!res.headersSent) {
-          res.status(500).json({ error: err.message });
+          res.status(500).json({ error: err.message || 'An error occurred' });
         }
       });
   },
